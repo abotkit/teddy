@@ -1,0 +1,8 @@
+<h1><%= @client.name %></h3>
+<p>
+  Website used for crawling:
+  <a href="<%= @client.website %>"><%= @client.website %></a>
+</p>
+
+<span><%= link "Edit", to: Routes.client_path(@conn, :edit, @client) %></span>
+<span><%= link "Back", to: Routes.client_path(@conn, :index) %></span>
