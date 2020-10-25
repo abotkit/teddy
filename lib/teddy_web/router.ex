@@ -21,12 +21,8 @@ defmodule TeddyWeb.Router do
     get "/", PageController, :index
     resources "/clients", ClientController
 
-    live "/crawls", CrawlLive.Index, :index
-    live "/crawls/new", CrawlLive.Index, :new
-    live "/crawls/:id/edit", CrawlLive.Index, :edit
-
-    live "/crawls/:id", CrawlLive.Show, :show
-    live "/crawls/:id/show/edit", CrawlLive.Show, :edit
+    get "/crawls", CrawlController, :index
+    post "/crawls/:id", CrawlController, :run
   end
 
   # Other scopes may use custom stacks.

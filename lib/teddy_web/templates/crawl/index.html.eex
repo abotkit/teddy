@@ -1,0 +1,10 @@
+<h1>Crawls</h1>
+
+<%= for crawl <- @processes do %>
+  <h3>Crawl process: <%= crawl.name %></h3>
+  <ul>
+    <li>State: <%= crawl.info[:status] %></li>
+    <li>Stack: <%= crawl.info[:stack_size] %></li>
+    <li>Heap: <%= crawl.info[:heap_size] %></li>
+  </ul>
+<% end %>

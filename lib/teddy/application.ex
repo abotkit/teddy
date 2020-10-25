@@ -14,7 +14,9 @@ defmodule Teddy.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Teddy.PubSub},
       # Start the Endpoint (http/https)
-      TeddyWeb.Endpoint
+      TeddyWeb.Endpoint,
+      # Crawler registry
+      {Registry, keys: :unique, name: Teddy.Fetcher.Worker}
       # Start a worker by calling: Teddy.Worker.start_link(arg)
       # {Teddy.Worker, arg}
     ]
