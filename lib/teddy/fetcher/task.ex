@@ -1,4 +1,4 @@
-defmodule Teddy.Fetcher.Task do
+defmodule Teddy.Fetcher.Website do
   @moduledoc """
   Fetches a website and returns the payload. Will follow redirects
 

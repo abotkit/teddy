@@ -49,7 +49,12 @@ defmodule Teddy.MixProject do
       {:phoenix_live_view, "~> 0.14.7"},
       # Crawler
       {:httpoison, "~> 1.6"},
-      {:floki, "~> 0.29.0"}
+      {:floki, "~> 0.29.0"},
+      # S3
+      {:ex_aws, "~> 2.1"},
+      {:ex_aws_s3, "~> 2.0"},
+      {:hackney, "~> 1.9"},
+      {:sweet_xml, "~> 0.6"}
     ]
   end
 

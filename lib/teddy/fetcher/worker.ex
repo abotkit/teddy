@@ -1,7 +1,8 @@
 defmodule Teddy.Fetcher.Worker do
+  require Logger
   use GenServer
 
-  alias Teddy.Fetcher.{Server, Task, Link}
+  alias Teddy.Fetcher.{Server, Website, Link}
 
   # Client API
   def start_link(name, link) do
@@ -34,8 +35,20 @@ defmodule Teddy.Fetcher.Worker do
     IO.puts("Visiting: #{current_uri}")
     GenServer.cast(server, :stats)
 
-    case Task.fetch(current_uri) do
+    case Website.fetch(current_uri) do
       {:ok, payload} ->
+        Logger.info("Uploading to S3")
+
+        spawn(fn ->
+          s3_key = "#{current_uri.host}#{current_uri.path}"
+          ExAws.S3.put_object(
+            "devcrawl",
+            "#{s3_key}.txt.gzip",
+            :zlib.gzip(payload)
+          ) |> ExAws.request!()
+          Logger.info("S3 upload done")
+        end)
+
         Server.visit(server, current_uri)
 
         Link.extract(base_uri, payload)
@@ -43,7 +56,7 @@ defmodule Teddy.Fetcher.Worker do
         |> Enum.each(&handle_cast(:crawl, %{state | current_uri: &1}))
 
       {code, _} ->
-        IO.puts("Error: #{code} for #{current_uri}")
+        Logger.info("Error: #{code} for #{current_uri}")
     end
 
     {:stop, :normal, state}
