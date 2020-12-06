@@ -1,0 +1,30 @@
+<h1>Crawls</h1>
+
+<form action="#" phx-submit="clear" phx-change="filter">
+    <%= text_input :file_name, :filter, value: @filter, placeholder: "Filter crawls..." %>
+    <%= submit "Clear" %>
+</form>
+
+<table>
+    <tr>
+        <th>File</th>
+        <th></th>
+    </tr>
+    <%= for crawl <- @crawls do %>
+        <tr>
+            <td class="code-container">
+                <%= if crawl.expanded do %>
+                    <a phx-click="hide"><%=  crawl.name %></a>
+                    <%= for line <- crawl.expanded do %>
+                        <span class="code"><%= line %></span>
+                        <br>
+                    <% end %>
+                <% else %>
+                    <a phx-click="expand" phx-value-file="<%= crawl.name %>">
+                        <%= crawl.name %>
+                    </a>
+                <% end %>
+            </td>
+        </tr>
+    <% end %>
+</table>
