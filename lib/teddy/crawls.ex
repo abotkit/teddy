@@ -1,5 +1,5 @@
 defmodule Teddy.Crawls do
-  @crawl_dir "./crawls/"
+  @crawl_dir "./gen/crawls/"
   @ignored_files MapSet.new([".keep"])
 
   def list_crawls() do

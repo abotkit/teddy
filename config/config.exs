@@ -31,7 +31,7 @@ config :crawly,
     {Crawly.Pipelines.Validate, fields: [:name]},
     {Crawly.Pipelines.DuplicatesFilter, item_id: :name},
     Crawly.Pipelines.JSONEncoder,
-    {Crawly.Pipelines.WriteToFile, folder: "./crawls/", extension: "jl"}
+    {Crawly.Pipelines.WriteToFile, folder: "./gen/crawls/", extension: "jl"}
   ],
   middlewares: [
     Crawly.Middlewares.DomainFilter,
