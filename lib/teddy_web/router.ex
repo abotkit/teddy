@@ -2,6 +2,7 @@ defmodule TeddyWeb.Router do
   use TeddyWeb, :router
 
   import Phoenix.LiveDashboard.Router
+  import Plug.BasicAuth
 
   pipeline :browser do
     plug :accepts, ["html"]
