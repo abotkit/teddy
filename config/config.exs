@@ -28,10 +28,8 @@ config :phoenix, :json_library, Jason
 
 config :crawly,
   pipelines: [
-    {Crawly.Pipelines.Validate, fields: [:name]},
-    {Crawly.Pipelines.DuplicatesFilter, item_id: :name},
     Crawly.Pipelines.JSONEncoder,
-    {Crawly.Pipelines.WriteToFile, folder: "./gen/crawls/", extension: "jl"}
+    {Crawly.Pipelines.WriteToFile, folder: System.tmp_dir!() <> "/crawls", extension: "jl"}
   ],
   middlewares: [
     Crawly.Middlewares.DomainFilter,

@@ -1,0 +1,20 @@
+body {
+  margin: 2em;
+}
+
+img {
+  width: 100%;
+}
+
+span {
+  display: inline-block;
+}
+
+.code {
+  font-family: "SF Mono Light", "Roboto Mono Light", monospace;
+  font-size: 0.8em;
+}
+
+.invalid-feedback {
+  color: red;
+}

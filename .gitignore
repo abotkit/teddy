@@ -36,6 +36,4 @@ npm-debug.log
 /.elixir_ls/
 
 /gen/crawls/*.jl
-
 /gen/bots/
-/lib/teddy/spiders/*.ex

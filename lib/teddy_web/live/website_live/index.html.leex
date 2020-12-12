@@ -1,0 +1,47 @@
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, TeddyWeb.WebsiteLive.FormComponent,
+    id: @website.id || :new,
+    title: @page_title,
+    action: @live_action,
+    website: @website,
+    return_to: Routes.website_index_path(@socket, :index) %>
+<% else %>
+    <p>
+        <%= live_patch "New Website", to: Routes.website_index_path(@socket, :new), class: "ui button primary" %>
+    </p>
+<% end %>
+
+
+<table class="ui celled table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Base url</th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="websites">
+        <%= for website <- @websites do %>
+            <tr id="website-<%= website.id %>">
+                <td><%= link website.name, to: Routes.website_show_path(@socket, :show, website) %></td>
+                <td><%= website.description %></td>
+                <td><a href="<%= website.base_url %>"><%= website.base_url %></a></td>
+
+                <td>
+                    <%= live_patch "Edit",
+                    to: Routes.website_index_path(@socket, :edit, website),
+                    class: "ui button" %>
+
+                    <%= link "Delete",
+                    to: "#",
+                    phx_click: "delete",
+                    phx_value_id: website.id,
+                    data: [confirm: "Are you sure?"],
+                    class: "ui button red" %>
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>

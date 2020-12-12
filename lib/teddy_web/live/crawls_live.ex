@@ -6,6 +6,7 @@ defmodule TeddyWeb.CrawlsLive do
       socket
       |> assign(:filter, "")
       |> assign(:expanded, nil)
+      |> assign(:page, :crawls)
       |> load_files()
 
     {:ok, socket}
@@ -48,13 +49,9 @@ defmodule TeddyWeb.CrawlsLive do
   end
 
   defp load_files(socket) do
-    filter =
-      Map.get(socket.assigns, :filter, "")
-      |> IO.inspect(label: :filter)
+    filter = Map.get(socket.assigns, :filter, "")
 
-    expanded =
-      Map.get(socket.assigns, :expanded, nil)
-      |> IO.inspect(label: :expanded)
+    expanded = Map.get(socket.assigns, :expanded, nil)
 
     crawls =
       Teddy.Crawls.list_crawls()

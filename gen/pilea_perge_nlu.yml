@@ -1,0 +1,34 @@
+version: '2.0'
+nlu:
+- lookup: product
+  examples: |-
+    Helmut
+    SUSTEE - Wassersensor
+    Pflanzenständer Groß
+    Hamburg anthrazit 24cm
+    Pflanzengranulat
+    Lichterkette
+    Makramee grau
+    Lyon 24cm
+    Hannelore
+    Sprühflasche
+    Susi
+    Max
+    Günther
+    Hamburg anthrazit 10cm
+    Hamburg anthrazit 13cm
+    Makramee naturbeige
+    Hamburg anthrazit 16cm
+    Hamburg anthrazit 19cm
+- intent: pricing
+  examples: |-
+    Wie viel Euro kostet [Pflanzenständer Groß](product_name)?
+    Wie viel Euro kostet [Sprühflasche](product_name)?
+    Wie teuer ist [Hamburg anthrazit 24cm](product_name)?
+    Was kostet [Günther](product_name)?
+    Wie teuer ist [Hamburg anthrazit 16cm](product_name)?
+    Wie teuer ist [Pflanzengranulat](product_name)?
+    Wie teuer ist [SUSTEE - Wassersensor](product_name)?
+    Kannst du mir sagen, was [Hamburg anthrazit 13cm](product_name) kosten soll?
+    Wie teuer ist [Makramee grau](product_name)?
+    Wie teuer ist [Hamburg anthrazit 19cm](product_name)?

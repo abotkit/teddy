@@ -1,0 +1,53 @@
+<h2>Extractors for <%= @website.name %></h2>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, TeddyWeb.ElementLive.FormComponent,
+    id: @element.id || :new,
+    website: @website,
+    title: @page_title,
+    action: @live_action,
+    element: @element,
+    return_to: Routes.element_index_path(@socket, :index, @website.id) %>
+<% else %>
+    <p>
+        <%= live_patch "New Element",
+          to: Routes.element_index_path(@socket, :new, @website.id),
+          class: "ui button primary" %>
+    </p>
+<% end %>
+
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Css selector</th>
+      <th>Multi</th>
+      <th>Processing</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="elements">
+    <%= for element <- @elements do %>
+      <tr id="element-<%= element.id %>">
+          <td>
+              <a href="<%= Routes.element_show_path(@socket, :show, @website.id, element) %>">
+                  <%= element.name %>
+              </a>
+          </td>
+        <td class="code"><%= element.css_selector %></td>
+        <td><%= element.multi %></td>
+        <td class="code"><%= Enum.join(element.processing, ", ") %></td>
+
+        <td>
+            <%= live_patch "Edit",
+            to: Routes.element_index_path(@socket, :edit, @website.id, element),
+            class: "ui button" %>
+
+            <%= link "Delete",
+            to: "#", phx_click: "delete", phx_value_id: element.id, data: [confirm: "Are you sure?"],
+            class: "ui button red" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

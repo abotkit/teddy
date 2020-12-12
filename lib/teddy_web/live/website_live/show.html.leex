@@ -1,0 +1,35 @@
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, TeddyWeb.WebsiteLive.FormComponent,
+    id: @website.id,
+    title: @page_title,
+    action: @live_action,
+    website: @website,
+    return_to: Routes.website_show_path(@socket, :show, @website) %>
+<% end %>
+
+
+<h2>
+    <%= @website.name %> |
+    <%= live_patch "Edit", to: Routes.website_show_path(@socket, :edit, @website), class: "ui primary button" %>
+</h2>
+<p><%= @website.description %></p>
+
+<p>
+    URL: <a href="<%= @website.base_url %>"><%= @website.base_url %></a>
+</p>
+
+<p>
+    Filter: <span class="code"><%= @website.filter %></span>
+</p>
+
+<h2>Extraction Elements</h2>
+
+<ul>
+    <%= for element <- @website.elements do %>
+        <li><%= element.name %></li>
+    <% end %>
+</ul>
+
+<%= live_redirect "Edit extractions",
+  to: Routes.element_index_path(@socket, :index, @website.id),
+  class: "ui primary button" %>

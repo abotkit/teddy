@@ -1,0 +1,46 @@
+<h1>Spiders</h1>
+
+<table class="ui celled table">
+    <thead>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Progress</th>
+        <th>Process</th>
+        <th></th>
+    </thead>
+
+    <tbody>
+    <%= for spider <- @spiders do %>
+        <tr>
+            <td><%= link spider.name, to: Routes.website_show_path(@socket, :show, spider.id) %></td>
+            <td><%= spider.status %></td>
+            <td>
+                <%= if spider.status == "started" do %>
+                    Done: <%= elem(spider.stats.data_storage, 1) %><br>
+                    Queue: <%= elem(spider.stats.requests_storage, 1) %>
+                <% else %>
+                    -
+                <% end %>
+            </td>
+            <td>
+                <%= if spider.status == "started" do %>
+                    Status: <%= spider.proc_info[:status] %><br>
+                    Heap: <%= spider.proc_info[:heap_size] %><br>
+                    Queue: <%= spider.proc_info[:message_queue_len] %>
+                <% else %>
+                    -
+                <% end %>
+            </td>
+            <td>
+                <button class="ui primary button" phx-click="start" phx-value-spider=<%= spider.id %>>
+                    Start
+                </button>
+                <button class="ui button" phx-click="stop" phx-value-spider=<%= spider.id %>>
+                    Stop
+                </button>
+            </td>
+        </tr>
+    <% end %>
+    </tbody>
+
+</table>

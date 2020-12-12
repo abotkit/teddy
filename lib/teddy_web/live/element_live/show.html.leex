@@ -1,0 +1,36 @@
+<h1>Show Element</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, TeddyWeb.ElementLive.FormComponent,
+    id: @element.id,
+    title: @page_title,
+    action: @live_action,
+    element: @element,
+    return_to: Routes.element_show_path(@socket, :show, @website.id, @element) %>
+<% end %>
+
+<ul>
+  <li>
+    <strong>Name:</strong>
+    <%= @element.name %>
+  </li>
+
+  <li>
+    <strong>Css selector:</strong>
+    <span class="bg-blue-600"><%= @element.css_selector %></span>
+  </li>
+
+  <li>
+    <strong>Multi:</strong>
+    <%= @element.multi %>
+  </li>
+
+  <li>
+    <strong>Processing:</strong>
+    <%= @element.processing %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.element_show_path(@socket, :edit, @website.id, @element), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.element_index_path(@socket, :index, @website.id) %></span>

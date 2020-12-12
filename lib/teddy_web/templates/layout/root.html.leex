@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <%= csrf_meta_tag() %>
-    <%= live_title_tag assigns[:page_title] || "Teddy", suffix: " · Phoenix Framework" %>
-    <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
-    <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
-  </head>
-  <body>
-    <header>
-      <section class="container">
-        <nav role="navigation">
-          <ul>
-            <li><a href="/">Spiders</a></li>
-            <li><a href="/crawls">Crawls</a></li>
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
-            <% end %>
-          </ul>
-        </nav>
-        <a href="https://phoenixframework.org/" class="phx-logo">
-          <img src="<%= Routes.static_path(@conn, "/images/phoenix.png") %>" alt="Phoenix Framework Logo"/>
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <%= csrf_meta_tag() %>
+        <%= live_title_tag assigns[:page_title] || "Teddy", suffix: " · Phoenix Framework" %>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+        <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+        <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    </head>
+    <body>
+        <a href="/">
+            <img src="<%= Routes.static_path(@conn, "/images/teddy.png") %>" alt="Phoenix Framework Logo"/>
         </a>
-      </section>
-    </header>
-    <%= @inner_content %>
-  </body>
+        <h1>Teddy - The Abotkit Crawler</h1>
+        <div class="ui secondary pointing menu">
+            <div class="item <%= (@conn.assigns[:page] == :spiders) && "active" %>"><a href="/">Spiders</a></div>
+            <div class="item <%= (@conn.assigns[:page] == :crawls) && "active" %>"><a href="/crawls">Crawls</a></div>
+            <div class="item <%= (@conn.assigns[:page] == :websites) && "active" %>"><a href="/websites">Websites</a></div>
+            <div class="right menu">
+                <div class="item">
+                    <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %>
+                </div>
+            </div>
+        </div>
+        <%= @inner_content %>
+    </body>
 </html>

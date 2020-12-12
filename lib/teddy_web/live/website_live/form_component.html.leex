@@ -1,0 +1,35 @@
+<h2><%= @title %></h2>
+
+<%= f = form_for @changeset, "#",
+  id: "website-form",
+  phx_target: @myself,
+  phx_change: "validate",
+  phx_submit: "save",
+  class: "ui segment form" %>
+
+<div class="field">
+    <%= label f, :name %>
+    <%= text_input f, :name %>
+    <%= error_tag f, :name %>
+</div>
+
+<div class="field">
+    <%= label f, :description %>
+    <%= textarea f, :description %>
+    <%= error_tag f, :description %>
+</div>
+
+<div class="field">
+    <%= label f, :base_url %>
+    <%= text_input f, :base_url %>
+    <%= error_tag f, :base_url %>
+</div>
+
+<div class="field">
+    <%= label f, "Url filter (add substring like /products)" %>
+    <%= text_input f, :filter %>
+    <%= error_tag f, :filter %>
+</div>
+
+  <%= submit "Save", phx_disable_with: "Saving...", class: "ui button primary" %>
+</form>
