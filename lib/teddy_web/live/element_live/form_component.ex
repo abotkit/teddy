@@ -45,15 +45,12 @@ defmodule TeddyWeb.ElementLive.FormComponent do
 
     case Spiders.create_element(element_params) do
       {:ok, _element} ->
-        IO.inspect(:success)
-
         {:noreply,
          socket
          |> put_flash(:info, "Element created successfully")
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        IO.inspect(changeset)
         {:noreply, assign(socket, changeset: changeset)}
     end
   end

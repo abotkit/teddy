@@ -53,10 +53,6 @@ defmodule Teddy.Spiders do
     module =
       (@spider_module_prefix <> website.name)
       |> String.to_atom()
-      |> IO.inspect(label: :to_start)
-
-    website.elements
-    |> IO.inspect(label: :elements)
 
     Teddy.Spiders.Spider.create_spider(module, website, website.elements)
   end
@@ -66,9 +62,7 @@ defmodule Teddy.Spiders do
 
     module =
       (@spider_module_prefix <> website.name)
-      |> IO.inspect(label: :pre_atom)
       |> String.to_atom()
-      |> IO.inspect(label: :to_stop)
 
     Crawly.Engine.stop_spider(module)
   end
