@@ -12,7 +12,7 @@ webapp.
 - [x] Define elements to extract (using CSS-selectors)
 - [x] Preview and downlad the resulting crawl
 - [x] Easy deployment to e.g. Heroku
-- [ ] Export to S3
+- [x] Export to S3
 - [ ] Crawl multiple elements per site (for example from menus or listings)
 
 ## Roadmap
