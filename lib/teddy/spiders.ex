@@ -92,6 +92,23 @@ defmodule Teddy.Spiders do
     }
   end
 
+  @doc "Checks if a spider has no websites left in the queue"
+  def done?(module) do
+    case {
+      Crawly.DataStorage.stats(module),
+      Crawly.RequestsStorage.stats(module)
+    } do
+      # Nothing stored
+      {{:stored_items, 0}, _} -> false
+      # Queue empty, something stored
+      {_, {:stored_requests, 0}} -> true
+      # Queue not empty, something stored
+      {_, {:stored_requests, _}} -> false
+      # Spider not running
+      _ -> true
+    end
+  end
+
   def list_websites do
     Repo.all(Website)
   end
