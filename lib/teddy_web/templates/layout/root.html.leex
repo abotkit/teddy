@@ -19,6 +19,7 @@
             <div class="item <%= (@conn.assigns[:page] == :spiders) && "active" %>"><a href="/">Spiders</a></div>
             <div class="item <%= (@conn.assigns[:page] == :crawls) && "active" %>"><a href="/crawls">Crawls</a></div>
             <div class="item <%= (@conn.assigns[:page] == :websites) && "active" %>"><a href="/websites">Websites</a></div>
+            <div class="item <%= (@conn.assigns[:page] == :buckets) && "active" %>"><a href="/buckets">Buckets</a></div>
             <div class="right menu">
                 <div class="item">
                     <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %>

@@ -7,18 +7,64 @@ defmodule TeddyWeb.CrawlsLive do
       |> assign(:filter, "")
       |> assign(:expanded, nil)
       |> assign(:page, :crawls)
+      |> assign(:selected, MapSet.new())
+      |> assign(:buckets, Teddy.Spiders.list_buckets())
       |> load_files()
 
     {:ok, socket}
   end
 
-  def handle_event("expand", %{"file" => file_name}, socket) do
+  def handle_event("select_file", %{"file" => file} = params, socket) do
+    selected = socket.assigns.selected
+    value = Map.get(params, "value")
+
+    selected =
+      case value do
+        "true" -> MapSet.put(selected, file)
+        _ -> MapSet.delete(selected, file)
+      end
+
+    {:noreply, assign(socket, :selected, selected)}
+  end
+
+  def handle_event("delete_file", %{"file" => file}, socket) do
+    case Teddy.Crawls.delete_crawl(file) do
+      :ok ->
+        socket =
+          socket
+          |> put_flash(:info, "Deleted #{file}")
+          |> assign(:selected, MapSet.delete(socket.assigns.selected, file))
+          |> load_files()
+
+        {:noreply, socket}
+
+      {:error, reason} ->
+        {:noreply, put_flash(socket, :error, reason)}
+    end
+  end
+
+  def handle_event("upload_selected", %{"upload" => %{"bucket" => bucket_id}}, socket) do
+    Enum.each(socket.assigns.selected, fn file_name ->
+      Task.async(fn -> Teddy.Crawls.upload_crawl(file_name, bucket_id) end)
+    end)
+
     socket =
       socket
-      |> assign(:expanded, file_name)
-      |> load_files()
+      |> put_flash(:info, "Uploading files in background")
+      |> assign(:selected, MapSet.new())
 
     {:noreply, socket}
+  end
+
+  def handle_info({_pid, s3_result}, socket) do
+    case s3_result do
+      {:ok, _res} -> {:noreply, put_flash(socket, :info, "S3 task finished")}
+      _ -> {:noreply, put_flash(socket, :error, "S3 task failed")}
+    end
+  end
+
+  def handle_info({:DOWN, _, _, _, _}, socket) do
+    {:noreply, put_flash(socket, :error, "Background task failed")}
   end
 
   def handle_event("hide", _params, socket) do
@@ -50,7 +96,6 @@ defmodule TeddyWeb.CrawlsLive do
 
   defp load_files(socket) do
     filter = Map.get(socket.assigns, :filter, "")
-
     expanded = Map.get(socket.assigns, :expanded, nil)
 
     crawls =

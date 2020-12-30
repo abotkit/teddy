@@ -1,0 +1,46 @@
+<h1>Listing Buckets</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, TeddyWeb.BucketLive.FormComponent,
+    id: @bucket.id || :new,
+    title: @page_title,
+    action: @live_action,
+    bucket: @bucket,
+    return_to: Routes.bucket_index_path(@socket, :index) %>
+<% else %>
+    <p>
+        <%= live_patch "New Bucket", to: Routes.bucket_index_path(@socket, :new), class: "ui button primary" %>
+    </p>
+<% end %>
+
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Region</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="buckets">
+    <%= for bucket <- @buckets do %>
+      <tr id="bucket-<%= bucket.id %>">
+        <td><%= link bucket.name, to: Routes.bucket_show_path(@socket, :show, bucket) %></td>
+        <td><%= bucket.region %></td>
+
+        <td>
+            <%= live_patch "Edit",
+            to: Routes.bucket_index_path(@socket, :edit, bucket),
+            class: "ui button" %>
+
+            <%= link "Delete",
+            to: "#",
+            phx_click: "delete",
+            phx_value_id: bucket.id,
+            data: [confirm: "Are you sure?"],
+            class: "ui button red" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
