@@ -64,7 +64,7 @@ defmodule TeddyWeb.CrawlsLive do
   end
 
   def handle_info({:DOWN, _, _, _, _}, socket) do
-    {:noreply, put_flash(socket, :error, "Background task failed")}
+    {:noreply, socket}
   end
 
   def handle_event("hide", _params, socket) do
