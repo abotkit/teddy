@@ -132,4 +132,69 @@ defmodule Teddy.SpidersTest do
       assert %Ecto.Changeset{} = Spiders.change_element(element)
     end
   end
+
+  describe "buckets" do
+    alias Teddy.Spiders.Bucket
+
+    @valid_attrs %{access_key_id: "some access_key_id", name: "some name", region: "some region", secret_access_key: "some secret_access_key"}
+    @update_attrs %{access_key_id: "some updated access_key_id", name: "some updated name", region: "some updated region", secret_access_key: "some updated secret_access_key"}
+    @invalid_attrs %{access_key_id: nil, name: nil, region: nil, secret_access_key: nil}
+
+    def bucket_fixture(attrs \\ %{}) do
+      {:ok, bucket} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Spiders.create_bucket()
+
+      bucket
+    end
+
+    test "list_buckets/0 returns all buckets" do
+      bucket = bucket_fixture()
+      assert Spiders.list_buckets() == [bucket]
+    end
+
+    test "get_bucket!/1 returns the bucket with given id" do
+      bucket = bucket_fixture()
+      assert Spiders.get_bucket!(bucket.id) == bucket
+    end
+
+    test "create_bucket/1 with valid data creates a bucket" do
+      assert {:ok, %Bucket{} = bucket} = Spiders.create_bucket(@valid_attrs)
+      assert bucket.access_key_id == "some access_key_id"
+      assert bucket.name == "some name"
+      assert bucket.region == "some region"
+      assert bucket.secret_access_key == "some secret_access_key"
+    end
+
+    test "create_bucket/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Spiders.create_bucket(@invalid_attrs)
+    end
+
+    test "update_bucket/2 with valid data updates the bucket" do
+      bucket = bucket_fixture()
+      assert {:ok, %Bucket{} = bucket} = Spiders.update_bucket(bucket, @update_attrs)
+      assert bucket.access_key_id == "some updated access_key_id"
+      assert bucket.name == "some updated name"
+      assert bucket.region == "some updated region"
+      assert bucket.secret_access_key == "some updated secret_access_key"
+    end
+
+    test "update_bucket/2 with invalid data returns error changeset" do
+      bucket = bucket_fixture()
+      assert {:error, %Ecto.Changeset{}} = Spiders.update_bucket(bucket, @invalid_attrs)
+      assert bucket == Spiders.get_bucket!(bucket.id)
+    end
+
+    test "delete_bucket/1 deletes the bucket" do
+      bucket = bucket_fixture()
+      assert {:ok, %Bucket{}} = Spiders.delete_bucket(bucket)
+      assert_raise Ecto.NoResultsError, fn -> Spiders.get_bucket!(bucket.id) end
+    end
+
+    test "change_bucket/1 returns a bucket changeset" do
+      bucket = bucket_fixture()
+      assert %Ecto.Changeset{} = Spiders.change_bucket(bucket)
+    end
+  end
 end

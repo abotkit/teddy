@@ -1,0 +1,40 @@
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, TeddyWeb.BucketLive.FormComponent,
+    id: @bucket.id,
+    title: @page_title,
+    action: @live_action,
+    bucket: @bucket,
+    return_to: Routes.bucket_show_path(@socket, :show, @bucket) %>
+<% end %>
+
+<h2><%= @bucket.name %>
+    <%= live_patch "Edit",
+    to: Routes.bucket_show_path(@socket, :edit, @bucket),
+    class: "ui primary button" %>
+</h2>
+<p><%= @bucket.region %></p>
+
+<ul>
+  <li>
+    <strong>Name:</strong>
+    <%= @bucket.name %>
+  </li>
+
+  <li>
+    <strong>Region:</strong>
+    <%= @bucket.region %>
+  </li>
+
+  <li>
+    <strong>Access key:</strong>
+    <%= @bucket.access_key_id %>
+  </li>
+
+  <li>
+    <strong>Secret access key:</strong>
+    <%= @bucket.secret_access_key %>
+  </li>
+
+</ul>
+
+<span><%= live_redirect "Back", to: Routes.bucket_index_path(@socket, :index), class: "ui button" %></span>

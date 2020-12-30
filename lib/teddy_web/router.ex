@@ -41,6 +41,13 @@ defmodule TeddyWeb.Router do
     live "/websites/:website_id/elements/:id/edit", ElementLive.Index, :edit
     live "/websites/:website_id/elements/:id", ElementLive.Show, :show
     live "/websites/:website_id/elements/:id/show/edit", ElementLive.Show, :edit
+
+    live "/buckets", BucketLive.Index, :index
+    live "/buckets/new", BucketLive.Index, :new
+    live "/buckets/:id/edit", BucketLive.Index, :edit
+
+    live "/buckets/:id", BucketLive.Show, :show
+    live "/buckets/:id/show/edit", BucketLive.Show, :edit
   end
 
   scope "/" do

@@ -2,6 +2,8 @@ defmodule Teddy.Crawls do
   @crawl_dir System.tmp_dir!() <> "/crawls"
   @ignored_files MapSet.new([".keep"])
 
+  alias ExAws.S3
+
   def list_crawls() do
     File.mkdir(@crawl_dir)
     {:ok, listing} = File.ls(@crawl_dir)
@@ -30,5 +32,30 @@ defmodule Teddy.Crawls do
       |> Enum.count()
 
     %{preview: preview, count: count}
+  end
+
+  def upload_crawl(file_name, bucket_id) do
+    bucket = Teddy.Spiders.get_bucket!(bucket_id)
+
+    file_name
+    |> get_path()
+    |> S3.Upload.stream_file()
+    |> S3.upload(bucket.name, file_name)
+    |> ExAws.request(
+      access_key_id: bucket.access_key_id,
+      secret_access_key: bucket.secret_access_key,
+      region: bucket.region
+    )
+
+    # |> case do
+    #   {:ok, _} ->
+    #   {:error, e} ->
+    # end
+  end
+
+  def delete_crawl(file_name) do
+    file_name
+    |> get_path()
+    |> File.rm()
   end
 end
