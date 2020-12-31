@@ -14,6 +14,15 @@ defmodule TeddyWeb.CrawlsLive do
     {:ok, socket}
   end
 
+  def handle_event("expand", %{"file" => file_name}, socket) do
+    socket =
+      socket
+      |> assign(:expanded, file_name)
+      |> load_files()
+
+    {:noreply, socket}
+  end
+
   def handle_event("select_file", %{"file" => file} = params, socket) do
     selected = socket.assigns.selected
     value = Map.get(params, "value")
@@ -63,10 +72,6 @@ defmodule TeddyWeb.CrawlsLive do
     end
   end
 
-  def handle_info({:DOWN, _, _, _, _}, socket) do
-    {:noreply, socket}
-  end
-
   def handle_event("hide", _params, socket) do
     socket =
       socket
@@ -91,6 +96,13 @@ defmodule TeddyWeb.CrawlsLive do
       |> assign(:filter, "")
       |> load_files()
 
+    {:noreply, socket}
+  end
+
+  @doc """
+  Prevents errors from `Task.async` processes shutting down
+  """
+  def handle_info({:DOWN, _, _, _, _}, socket) do
     {:noreply, socket}
   end
 

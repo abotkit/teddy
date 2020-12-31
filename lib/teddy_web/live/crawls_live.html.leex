@@ -1,45 +1,50 @@
 <h1>Crawls</h1>
 
-<p>
-    <form action="#" class="ui segment form" phx-submit="clear" phx-change="filter">
-        <h4>Filter</h4>
-        <div class="field">
-            <%= text_input :file_name, :filter, value: @filter, placeholder: "Filter crawls..." %>
+<div class="ui stackable two column grid">
+    <div class="row">
+        <div class="column">
+            <form action="#" class="ui segment form" phx-submit="clear" phx-change="filter">
+                <h4>Filter</h4>
+                <div class="field">
+                    <%= text_input :file_name, :filter, value: @filter, placeholder: "Filter crawls..." %>
+                </div>
+                <%= submit "Clear", class: "ui red button" %>
+            </form>
         </div>
-        <%= submit "Clear", class: "ui red button" %>
-    </form>
-</p>
 
-<p>
-    <form action="#" class="ui segment form" phx-submit="upload_selected">
-        <h4>Upload to S3</h4>
+        <div class="column">
+            <form action="#" class="ui segment form" phx-submit="upload_selected">
+                <h4>Upload to S3</h4>
 
-        <%= if MapSet.size(@selected) == 0 do %>
-            No items selected
-        <% else %>
-            <ul>
-                <%= for selected <- @selected do %>
-                    <li><%= selected %></li>
+                <%= if MapSet.size(@selected) == 0 do %>
+                    No items selected
+                <% else %>
+                    <ul>
+                        <%= for selected <- @selected do %>
+                            <li><%= selected %></li>
+                        <% end %>
+                    </ul>
                 <% end %>
-            </ul>
-        <% end %>
 
-        <div class="field">
-            <%= select :upload,
-              :bucket,
-              Enum.map(@buckets, fn bucket ->
-                  {bucket.name, bucket.id}
-              end)
-            %>
+                <div class="field">
+                    <%= select :upload,
+                    :bucket,
+                    Enum.map(@buckets, fn bucket ->
+                        {bucket.name, bucket.id}
+                        end)
+                    %>
+                </div>
+
+                <%= submit "Upload", class: "ui blue button" %>
+            </form>
         </div>
-
-        <%= submit "Upload", class: "ui blue button" %>
-    </form>
-</p>
+    </div>
+</div>
 
 <table class="ui table">
     <thead>
         <th>File</th>
+        <th></th>
         <th></th>
     </thead>
 
@@ -63,14 +68,27 @@
                 <% end %>
             </td>
             <td>
-                <%= link "Download", to: Routes.crawl_path(@socket, :download_file, crawl.name) %>
-                <%= link "Delete", to: "#", phx_click: "delete_file", phx_value_file: crawl.name %>
-                <%= checkbox(nil,
-                    :test,
-                    value: MapSet.member?(@selected, crawl.name) && "true",
-                    phx_click: "select_file",
-                    phx_value_file: crawl.name
-                ) %>
+                <div class="ui checkbox">
+                    <%= checkbox(nil,
+                        :test,
+                        value: MapSet.member?(@selected, crawl.name) && "true",
+                        phx_click: "select_file",
+                        phx_value_file: crawl.name,
+                        class: "ui"
+                    ) %>
+                    <label>S3 Upload</label>
+                </div>
+            </td>
+            <td>
+                <%= link "Download",
+                to: Routes.crawl_path(@socket, :download_file, crawl.name),
+                class: "ui button primary" %>
+
+                <%= link "Delete",
+                to: "#",
+                phx_click: "delete_file",
+                phx_value_file: crawl.name,
+                class: "ui button red" %>
             </td>
         </tr>
     <% end %>
