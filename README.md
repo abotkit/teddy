@@ -6,6 +6,11 @@ standalone website that aims to store which elements to extract in a database
 which the user can edit. The crawlers will run in the same process as the
 webapp.
 
+## Screenshots
+
+![Screenshot from 2021-02-18 21-48-16](https://user-images.githubusercontent.com/2054706/108366917-de18d500-7233-11eb-9e37-8180c8e19cca.png)
+![Screenshot from 2021-02-18 21-49-57](https://user-images.githubusercontent.com/2054706/108366952-e83ad380-7233-11eb-9fdd-4486716ccbab.png)
+
 ## Features
 
 - [x] Create new websites
