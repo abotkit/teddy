@@ -6,6 +6,9 @@ standalone website that aims to store which elements to extract in a database
 which the user can edit. The crawlers will run in the same process as the
 webapp.
 
+You can already deploy this app to heroku and crawl multiple websites in parallel, add a S3 store and upload
+the resulting json files there. The app has basic transformation capabilities for crawled data
+
 ## Screenshots
 
 ![Screenshot from 2021-02-18 21-48-16](https://user-images.githubusercontent.com/2054706/108366917-de18d500-7233-11eb-9e37-8180c8e19cca.png)
